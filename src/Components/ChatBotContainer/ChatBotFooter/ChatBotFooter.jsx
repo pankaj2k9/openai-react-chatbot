@@ -3,7 +3,8 @@ import React from 'react';
 export default function ChatBotFooter({
     message,
     onInputChangeHandler,
-    onSubmitUserMessageHandler
+    onSubmitUserMessageHandler,
+    onKeyPress
 }) {
     return (
         <div className="input-group mb-3 py-1">
@@ -13,6 +14,7 @@ export default function ChatBotFooter({
                 placeholder="Type a message..."
                 value={message}
                 onChange={onInputChangeHandler}
+                onKeyUp={onKeyPress}
             />
             <button
                 disabled={!message}

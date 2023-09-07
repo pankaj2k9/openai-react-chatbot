@@ -41,6 +41,12 @@ export default function ChatbotContainer() {
         setMessage(message);
     };
 
+    const onKeyUp = (event) => {
+        if (event.charCode === 13) {
+            onSubmitUserMessageHandler()
+        }
+      }
+
     const onSubmitUserMessageHandler = () => {
         const newMessage = {
             userType: 'user',
@@ -88,6 +94,7 @@ export default function ChatbotContainer() {
                     message={message}
                     onInputChangeHandler={onInputChangeHandler}
                     onSubmitUserMessageHandler={onSubmitUserMessageHandler}
+                    onKeyPress={onKeyUp}
                 />
             </div>
         </div>
