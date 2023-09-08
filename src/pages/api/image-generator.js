@@ -1,33 +1,24 @@
-import axios from 'axios';
+import { Configuration, OpenAIApi } from "openai";
 
-const OPEN_AI_IMAGE_URL = 'https://api.openai.com/v1/images/generations';
-const MODEL = 'image-alpha-001';
-const IMAGE_SIZE = '1024x1024';
-const RESPONSE_FORMAT = 'url';
-const httpConfig = {
-    headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + process.env.OPEN_AI_SECRET_KEY
-    }
-};
+const configuration = new Configuration({
+    organization: "org-SNdKlaRFQF1O5ob1sWtQlK68",
+    apiKey: process.env.OPEN_AI_SECRET_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 export default async function ImageGeneratorHandler(req, res) {
     try {
-        const requestData = {
-            model: MODEL,
+        const response = await openai.createImage({
             prompt: req.body.userCommand,
-            size: IMAGE_SIZE,
-            response_format: RESPONSE_FORMAT
-        };
+            n: 1,
+            size: "512x512",
+        });
+        image_url = response.data.data[0].url;
 
-        const response = await axios.post(
-            OPEN_AI_IMAGE_URL,
-            requestData,
-            httpConfig
-        );
-
-        res.status(200).json({ imageURL: response.data.data[0].url });
+        res.status(200).json({ imageURL: image_url });
     } catch (error) {
-        res.status(500).json({message: 'Something went wrong!'});
+        res.status(500).json({ message: 'Something went wrong!' });
     }
+
+
 }

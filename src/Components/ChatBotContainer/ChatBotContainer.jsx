@@ -4,30 +4,11 @@ import ChatBotHeader from './ChatBotHeader/ChatBotHeader';
 import ChatBotMessageContainer from './ChatBotMessageContainer/ChatBotMessageContainer';
 import ChatBotFooter from './ChatBotFooter/ChatBotFooter';
 
-const questionDomain = ['Who are you?', 'What is this project?', 'What is AI?'];
-
-const answerDomain = [
-    "I'm a Chatbot created by pankaj",
-    "This is a partcice course by pankaj",
-    'AI means Artificial Intelligence'
-];
-
-const prompt = (message) =>
-    `if the question is related to ${questionDomain.join(
-        ', '
-    )} - answer only one from: ${answerDomain.join(
-        ', '
-    )} where question is: ${message}, else say: Please try some other question`;
 
 export default function ChatbotContainer() {
     const [messages, setMessages] = useState([
         {
             message: 'How may I help you?',
-            userType: 'assistant',
-            createdAt: new Date()
-        },
-        {
-            message: 'You can ask what is this course for example.',
             userType: 'assistant',
             createdAt: new Date()
         }
@@ -42,7 +23,7 @@ export default function ChatbotContainer() {
     };
 
     const onKeyUp = (event) => {
-        if (event.charCode === 13) {
+        if (event.code === "Enter") {
             onSubmitUserMessageHandler()
         }
       }
@@ -62,10 +43,7 @@ export default function ChatbotContainer() {
         fetch('/api/chatbot', {
             method: 'POST',
             body: JSON.stringify({
-                message: {
-                    role: newMessage.userType,
-                    content: prompt(newMessage.message)
-                }
+                message: newMessage.message
             })
         })
             .then(async (response) => {
